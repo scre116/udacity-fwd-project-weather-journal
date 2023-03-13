@@ -36,7 +36,7 @@ app.get('/all', function (request, response) {
 // POST route
 // request example:
 // {
-//     "date": "2020-01-01",
+//     "date": "01.01.2020",
 //     "temperature": 20,
 //     "feelings": "I am feeling good"
 // }
