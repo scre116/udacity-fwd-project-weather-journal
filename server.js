@@ -45,7 +45,7 @@ app.post('/add', function (request, response) {
     projectData['date'] = request.body.date;
     projectData['temperature'] = request.body.temperature;
     projectData['feelings'] = request.body.feelings;
-    console.log(projectData);
+    console.log('received data: ', projectData);
     response.send("OK");
 
 });
