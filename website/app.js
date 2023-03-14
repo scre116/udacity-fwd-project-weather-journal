@@ -10,21 +10,6 @@ let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 const SERVER_BASE_URL = 'http://localhost:8000';
 const OPEN_WEATER_MAP_BASE_URL = `http://api.openweathermap.org/data/2.5/weather`;
 
-//  Fetch weather data from OpenWeatherMap API
-const getWeather = async (zipCode) => {
-    const url = new URL(OPEN_WEATER_MAP_BASE_URL);
-    url.searchParams.append('zip', zipCode);
-    url.searchParams.append('appid', apiKey);
-    url.searchParams.append('units', 'imperial');
-
-    const response = await fetch(url);
-    try {
-        return await response.json();
-    } catch (error) {
-        console.log("error", error);
-    }
-}
-
 async function generateData() {
     const zipCode = document.getElementById('zip').value;
 
@@ -42,9 +27,30 @@ async function generateData() {
     console.log("data to be sent to server: ", data);
 
     await sendToBackend(data);
-    // await getFromBackend(); 
+    const dataFromBackend = await getFromBackend();
+    console.log("data from backend: ", dataFromBackend);
+
     // updateUI();
 
+}
+
+//  Fetch weather data from OpenWeatherMap API
+const getWeather = async (zipCode) => {
+    const url = new URL(OPEN_WEATER_MAP_BASE_URL);
+    url.searchParams.append('zip', zipCode);
+    url.searchParams.append('appid', apiKey);
+    url.searchParams.append('units', 'imperial');
+
+    return await get(url);
+}
+
+async function get(url) {
+    const response = await fetch(url);
+    try {
+        return await response.json();
+    } catch (error) {
+        console.log("error", error);
+    }
 }
 
 async function sendToBackend(data) {
@@ -60,6 +66,10 @@ async function post(endpoint, data) {
         },
         body: JSON.stringify(data),
     });
+}
+
+async function getFromBackend() {
+    return await get(SERVER_BASE_URL + '/all');
 }
 
 // add listener to generate button
