@@ -6,13 +6,13 @@ const apiKey = '9615621bc51a7f388f0f36ccbb6a4cdd';
 const SERVER_BASE_URL = 'http://localhost:8000';
 const OPEN_WEATHER_MAP_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather';
 
+// Listener for generate button
 async function generateData() {
     try {
         const zipCode = document.getElementById('zip').value;
-
         const feelings = document.getElementById('feelings').value;
-        const temperature = await getTemperature(zipCode);
 
+        const temperature = await getTemperature(zipCode);
         console.log("received temperature: ", temperature);
 
         const data = {
@@ -20,9 +20,10 @@ async function generateData() {
             temperature: temperature,
             feelings: feelings
         }
-        console.log("data to be sent to server: ", data);
 
+        console.log("data to be sent to server: ", data);
         await sendToBackend(data);
+
         const dataFromBackend = await getFromBackend();
         console.log("data from backend: ", dataFromBackend);
 

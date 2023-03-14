@@ -4,14 +4,13 @@ body{
 }
 
 #app{
-    display: grid;
-    grid-auto-rows: minmax(150px, auto);
-    /* grid-template-columns:  */
-    height:100vh;
+    display: flex;
+    flex-direction: column;
     background: #f23557;
     color: #f0d43a;
-    justify-content: center;
-    grid-gap: 1em;
+    justify-content: space-evenly;
+    gap: 1em;
+    padding: 1em;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
 }
@@ -20,53 +19,52 @@ body{
 
 }
 
-.entry{
+.entry {
     background: rgba(59, 74, 107, .4);
+    padding: 1em;
 }
 
-#entryHolder{
-
+#date,
+#temp,
+#content {
+    min-height: 1em;
 }
 
-#date{
-
+#content {
+    font-style: italic;
 }
 
-#temp{
-
-}
-
-#content{
-
-}
 
 .headline {
 
 }
-.title{
 
+.title {
+    font-size: 27px;
+    color: #22b2da;
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
-label{
-    display:block;
+label {
+    display: block;
     font-size: 27px;
 }
 
-input{
-    display:block;
+input {
+    display: block;
     height: 60px;
-    width: 320px;
-    background:#22b2da;
+    width: 400px;
+    background: #22b2da;
     color: #f0d43a;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
     border: none;
 }
 
-button{
+button {
+    display: block;
     width: 400px;
-    height: 100px;
+    height: 70px;
     background: #3b4a6b;
     color: #f0d43a;
     font-size: 26px;
@@ -74,16 +72,20 @@ button{
     border: none;
     box-shadow: 2px 4px 5px #444;
 }
-h1{
-    font-size: 36px;
+
+h1 {
+    font-size: 35px;
+    margin: 0;
 }
 
-textarea{
-    background:#22b2da;
+textarea {
+    width: 400px;
+    background: #22b2da;
     color: #f0d43a;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
 }
+
 /* Reset style for HTML element on active to have no border*/
 input:focus,
 select:focus,
