@@ -11,54 +11,62 @@ const SERVER_BASE_URL = 'http://localhost:8000';
 const OPEN_WEATER_MAP_BASE_URL = `http://api.openweathermap.org/data/2.5/weather`;
 
 async function generateData() {
-    const zipCode = document.getElementById('zip').value;
+    try {
+        const zipCode = document.getElementById('zip').value;
 
-    const feelings = document.getElementById('feelings').value;
-    const weatherData = await getWeather(zipCode);
+        const feelings = document.getElementById('feelings').value;
+        const temperature = await getTemperature(zipCode);
 
-    console.log("received weather data: ", weatherData);
-    const temperature = weatherData.main.temp;
+        console.log("received temperature: ", temperature);
 
-    const data = {
-        date: newDate,
-        temperature: temperature,
-        feelings: feelings
+        const data = {
+            date: newDate,
+            temperature: temperature,
+            feelings: feelings
+        }
+        console.log("data to be sent to server: ", data);
+
+        await sendToBackend(data);
+        const dataFromBackend = await getFromBackend();
+        console.log("data from backend: ", dataFromBackend);
+
+        updateUI(dataFromBackend);
+    } catch (error) {
+        console.log("error", error);
     }
-    console.log("data to be sent to server: ", data);
-
-    await sendToBackend(data);
-    const dataFromBackend = await getFromBackend();
-    console.log("data from backend: ", dataFromBackend);
-
-    // updateUI();
 
 }
 
-//  Fetch weather data from OpenWeatherMap API
-const getWeather = async (zipCode) => {
+//  Fetch temperature from OpenWeatherMap API
+async function getTemperature(zipCode) {
     const url = new URL(OPEN_WEATER_MAP_BASE_URL);
     url.searchParams.append('zip', zipCode);
     url.searchParams.append('appid', apiKey);
     url.searchParams.append('units', 'imperial');
 
-    return await get(url);
+    try {
+        const result = await get(url);
+        // if cod is 2xx, then result is a valid response
+        if (result.cod >= 200 && result.cod < 300) {
+            return result.main.temp;
+        } else {
+            console.error("could not fetch temperature from OpenWeatherMap", result);
+            return "N/A";
+        }
+    } catch (error) {
+        console.error("could not fetch temperature from OpenWeatherMap", error);
+        return "N/A";
+    }
 }
 
 async function get(url) {
     const response = await fetch(url);
-    try {
-        return await response.json();
-    } catch (error) {
-        console.log("error", error);
-    }
+
+    return await response.json();
 }
 
 async function sendToBackend(data) {
-    await post('/add', data);
-}
-
-async function post(endpoint, data) {
-    return await fetch(SERVER_BASE_URL + endpoint, {
+    await fetch(SERVER_BASE_URL + '/add', {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -70,6 +78,12 @@ async function post(endpoint, data) {
 
 async function getFromBackend() {
     return await get(SERVER_BASE_URL + '/all');
+}
+
+function updateUI(data) {
+    document.getElementById('date').innerHTML = data.date;
+    document.getElementById('temp').innerHTML = data.temperature + " °F";
+    document.getElementById('content').innerHTML = data.feelings;
 }
 
 // add listener to generate button
