@@ -1,12 +1,14 @@
 # Weather-Journal App Project
 
 ## Overview
-This project requires you to create an asynchronous web app that uses Web API and user data to dynamically update the UI. 
+The project is about creating an asynchronous web app that uses Web API and user data to dynamically update the UI.
+You can enter your US zip code and your feelings and the app will show you the current temperature in your area. 
+The temperature and entered user data is stored in a local server. Then it is fetched and displayed in the UI.
 
 ## Instructions
-This will require modifying the `server.js` file and the `website/app.js` file. You can see `index.html` for element references, 
-and once you are finished with the project steps, you can use `style.css` to style your application to customized perfection.
+1. Enter your OpenWeatherMap API key in `website/app.js` file, if you have one.
+2. Start server by running `node server.js` in the terminal.
+3. Open the browser and go to `localhost:8000`.
+4. Enter your US zip code and your feelings.
+5. Click on the button `Generate`.
 
-## Extras
-If you are interested in testing your code as you go, you can use `tests.js` as a template for writing and running some basic tests for 
-your code.
