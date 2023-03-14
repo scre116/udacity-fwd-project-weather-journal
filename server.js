@@ -37,7 +37,7 @@ app.get('/all', function (request, response) {
 // request example:
 // {
 //     "date": "01.01.2020",
-//     "temperature": 20,
+//     "temperature": 20 °F,
 //     "feelings": "I am feeling good"
 // }
 app.post('/add', function (request, response) {
