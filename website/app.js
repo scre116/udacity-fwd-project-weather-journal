@@ -1,12 +1,13 @@
-/* Global Variables */
+/* Global constants */
 
 // API Key for OpenWeatherMap API
 const apiKey = '9615621bc51a7f388f0f36ccbb6a4cdd';
 
-const SERVER_BASE_URL = 'http://localhost:8000';
-const OPEN_WEATHER_MAP_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather';
+const serverBaseUrl = 'http://localhost:8000';
+const openWeatherMapBaseUrl = 'http://api.openweathermap.org/data/2.5/weather';
 
 /* Functions */
+
 // Listener for generate button
 async function generateData() {
     try {
@@ -37,7 +38,7 @@ async function generateData() {
 
 //  Fetch temperature from OpenWeatherMap API
 async function getTemperature(zipCode) {
-    const url = new URL(OPEN_WEATHER_MAP_BASE_URL);
+    const url = new URL(openWeatherMapBaseUrl);
     url.searchParams.append('zip', zipCode);
     url.searchParams.append('appid', apiKey);
     url.searchParams.append('units', 'imperial');
@@ -74,7 +75,7 @@ async function get(url) {
 }
 
 async function sendToBackend(data) {
-    await fetch(SERVER_BASE_URL + '/add', {
+    await fetch(serverBaseUrl + '/add', {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -85,7 +86,7 @@ async function sendToBackend(data) {
 }
 
 async function getFromBackend() {
-    return await get(SERVER_BASE_URL + '/all');
+    return await get(serverBaseUrl + '/all');
 }
 
 function updateUI(data) {
