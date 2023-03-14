@@ -6,6 +6,7 @@ const apiKey = '9615621bc51a7f388f0f36ccbb6a4cdd';
 const SERVER_BASE_URL = 'http://localhost:8000';
 const OPEN_WEATHER_MAP_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather';
 
+/* Functions */
 // Listener for generate button
 async function generateData() {
     try {
@@ -45,7 +46,7 @@ async function getTemperature(zipCode) {
         const result = await get(url);
         // if code is 2xx, then result is a valid response
         if (result.cod >= 200 && result.cod < 300) {
-            return result.main.temp;
+            return result.main.temp + " °F";
         } else {
             console.error("could not fetch temperature from OpenWeatherMap", result);
             return "N/A";
@@ -89,7 +90,7 @@ async function getFromBackend() {
 
 function updateUI(data) {
     document.getElementById('date').innerHTML = data.date;
-    document.getElementById('temp').innerHTML = data.temperature + " °F";
+    document.getElementById('temp').innerHTML = data.temperature;
     document.getElementById('content').innerHTML = data.feelings;
 }
 
