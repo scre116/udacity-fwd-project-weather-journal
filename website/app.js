@@ -1,14 +1,10 @@
 /* Global Variables */
 
-// Personal API Key for OpenWeatherMap API is not published for security reasons
+// API Key for OpenWeatherMap API
 const apiKey = '9615621bc51a7f388f0f36ccbb6a4cdd';
 
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
-
 const SERVER_BASE_URL = 'http://localhost:8000';
-const OPEN_WEATER_MAP_BASE_URL = `http://api.openweathermap.org/data/2.5/weather`;
+const OPEN_WEATHER_MAP_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather';
 
 async function generateData() {
     try {
@@ -20,7 +16,7 @@ async function generateData() {
         console.log("received temperature: ", temperature);
 
         const data = {
-            date: newDate,
+            date: getDate(),
             temperature: temperature,
             feelings: feelings
         }
@@ -32,21 +28,21 @@ async function generateData() {
 
         updateUI(dataFromBackend);
     } catch (error) {
-        console.log("error", error);
+        console.error("error", error);
     }
 
 }
 
 //  Fetch temperature from OpenWeatherMap API
 async function getTemperature(zipCode) {
-    const url = new URL(OPEN_WEATER_MAP_BASE_URL);
+    const url = new URL(OPEN_WEATHER_MAP_BASE_URL);
     url.searchParams.append('zip', zipCode);
     url.searchParams.append('appid', apiKey);
     url.searchParams.append('units', 'imperial');
 
     try {
         const result = await get(url);
-        // if cod is 2xx, then result is a valid response
+        // if code is 2xx, then result is a valid response
         if (result.cod >= 200 && result.cod < 300) {
             return result.main.temp;
         } else {
@@ -57,6 +53,16 @@ async function getTemperature(zipCode) {
         console.error("could not fetch temperature from OpenWeatherMap", error);
         return "N/A";
     }
+}
+
+function getDate() {
+    const d = new Date();
+    // format date as DD.MM.YYYY with leading zeros
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const year = d.getFullYear();
+
+    return `${day}.${month}.${year}`;
 }
 
 async function get(url) {
